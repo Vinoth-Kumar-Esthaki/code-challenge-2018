@@ -77,10 +77,7 @@ class MemoryDatabase{
   public function storeValue($name,$value=false)
   {
 
-    // if(isset($this->storage[$name])) {
-    //   $this->valueFrequency[$this->storage[$name]] -= 1;
-    //   unset($this->storage[$name]);
-    // }
+    //if exist already remove & update the new value
     $this->remove($name);
 
     if ($value) {
