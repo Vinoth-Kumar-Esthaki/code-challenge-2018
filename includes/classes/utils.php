@@ -51,7 +51,7 @@ DOC;
    * through the stdin
    *
    * @param array commands
-   * @param object database 
+   * @param object database
    * @return return boolean
    */
   public static function executeCommands($commands,$database)
@@ -62,10 +62,10 @@ DOC;
         if(!empty($userCmd)){
             switch (strtoupper($userCmd)) {
               case 'SET':
-                // code...
+                  $database->set($command[1],$command[2]);
                 break;
               case 'GET':
-                  // code...
+                  echo $database->get($command[1])."\n";
                 break;
               case 'UNSET':
                     // code...
