@@ -41,6 +41,15 @@ class Utils{
       END
         Exit the program.
 
+      BEGIN
+        Open a transactional block.
+
+      ROLLBACK
+        Rollback all of the commands from the most recent transcational block.
+
+      COMMIT
+        Permanently store all of the operations from all presently open transactional block.
+
 DOC;
     return $docText;
 
@@ -59,30 +68,46 @@ DOC;
     try{
       foreach($commands as $idx=>$command){
         $userCmd = $command[0] ?? "";
+        $name = $command[1] ?? "";
+        $value = $command[2] ?? null;
+
         if(!empty($userCmd)){
             switch (strtoupper($userCmd)) {
               case 'SET':
-                  $database->set($command[1],$command[2]);
+                $database->set($name,$value);
                 break;
               case 'GET':
-                  echo $database->get($command[1])."\n";
+                echo $database->get($name)."\n";
                 break;
               case 'UNSET':
-                    // code...
+                $database->deleteValue($name);
                 break;
-
+              case 'NUMEQUALTO':
+                echo $database->frequency($name)."\n";
+                break;
+              case 'BEGIN':
+                $database->begin();
+                break;
+              case 'ROLLBACK':
+                $database->rollback();
+                break;
+              case 'COMMIT':
+                $database->commit();
+                break;
+              case 'END':
+                exit();
+                break;
               default:
-                // code...
+                fwrite(STDOUT, "Invalid Command ! \n");
+                exit();
                 break;
             }
         }else{
-            throw new \Exception("Command block cannot be empty !", 1);
-
+            throw new \Exception("Command block cannot be empty !");
         }
       }
-
     }catch(Exception $e){
-      fwrite(STDIN,$e->getMessage());
+      fwrite(STDIN,$e->getMessage()."\n");
     }
   }
 
